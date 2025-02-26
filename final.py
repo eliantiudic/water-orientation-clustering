@@ -199,7 +199,33 @@ def main():
                 if dist < best_dist:
                     best_dist = dist
                     best_i = i
+            # Oxygen at origin
+            Ox = 0.0
+            Oy = 0.0
+            Oz = 0.0
 
+            # Translate H1 and H2 so the O is at (0,0,0)
+            H1x = h1x[best_i] - ox[best_i]
+            H1y = h1y[best_i] - oy[best_i]
+            H1z = h1z[best_i] - oz[best_i]
+            H2x = h2x[best_i] - ox[best_i]
+            H2y = h2y[best_i] - oy[best_i]
+            H2z = h2z[best_i] - oz[best_i]
+
+            # Print the representative water, with O at origin
+            f.write(f"REMARK  Cluster {cluster_id}: {size} waters ({percent:.2f}%)\n")
+
+            f.write("ATOM  {:5d}  {:>2s}  SOL{:4d}    {:8.3f}{:8.3f}{:8.3f}\n".format(
+                best_i, "OW", cluster_id, Ox, Oy, Oz
+            ))
+            f.write("ATOM  {:5d}  {:>2s}  SOL{:4d}    {:8.3f}{:8.3f}{:8.3f}\n".format(
+                best_i, "H1", cluster_id, H1x, H1y, H1z
+            ))
+            f.write("ATOM  {:5d}  {:>2s}  SOL{:4d}    {:8.3f}{:8.3f}{:8.3f}\n".format(
+                best_i, "H2", cluster_id, H2x, H2y, H2z
+            ))
+            f.write("\n")
+            '''
             # Now best_i is the "representative" for the cluster
             f.write(f"REMARK  Cluster {cluster_id}: {size} waters ({percent:.2f}%)\n")
 
@@ -215,6 +241,7 @@ def main():
                 best_i, "H2", cluster_id, h2x[best_i], h2y[best_i], h2z[best_i]
             ))
             f.write("\n")
+            '''
 
     print(f"DBSCAN finished. Found {num_clusters} total clusters (some may be under 5%).")
     print(f"Wrote file: {outfilename}")
