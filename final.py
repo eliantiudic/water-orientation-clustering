@@ -11,7 +11,6 @@ def parse_pdb_water_file(inputfile):
     Reads 'inputfile' and returns lists: oxygen_lines, h1_lines, h2_lines.
     Each water is 3 lines: O, H1, H2.
     We assume lines[1:end:3], lines[2:end:3], lines[3:end:3] for O/H1/H2
-    (matching your original code).
     """
     with open(inputfile, 'r') as f:
         lines = f.readlines()
@@ -130,7 +129,6 @@ def main():
     inputfile = sys.argv[1]
 
     # Output name based on input
-    # e.g., "cluster.000001.pdb" -> "cluster.000001_dbscan_centroids.pdb"
     if inputfile.lower().endswith('.pdb'):
         base = inputfile[:-4]  # remove ".pdb"
     else:
@@ -225,24 +223,7 @@ def main():
                 best_i, "H2", cluster_id, H2x, H2y, H2z
             ))
             f.write("\n")
-            '''
-            # Now best_i is the "representative" for the cluster
-            f.write(f"REMARK  Cluster {cluster_id}: {size} waters ({percent:.2f}%)\n")
-
-            # Print only that one water's O/H1/H2
-            # Use 'best_i' as atom number, or you can pick something else
-            f.write("ATOM  {:5d}  {:>2s}  SOL{:4d}    {:8.3f}{:8.3f}{:8.3f}\n".format(
-                best_i, "OW", cluster_id, ox[best_i], oy[best_i], oz[best_i]
-            ))
-            f.write("ATOM  {:5d}  {:>2s}  SOL{:4d}    {:8.3f}{:8.3f}{:8.3f}\n".format(
-                best_i, "H1", cluster_id, h1x[best_i], h1y[best_i], h1z[best_i]
-            ))
-            f.write("ATOM  {:5d}  {:>2s}  SOL{:4d}    {:8.3f}{:8.3f}{:8.3f}\n".format(
-                best_i, "H2", cluster_id, h2x[best_i], h2y[best_i], h2z[best_i]
-            ))
-            f.write("\n")
-            '''
-
+            
     print(f"DBSCAN finished. Found {num_clusters} total clusters (some may be under 5%).")
     print(f"Wrote file: {outfilename}")
 
